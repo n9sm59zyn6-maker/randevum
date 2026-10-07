@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: randevum
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: randevum-db
+          property: connectionString
+      - key: SESSION_DAYS
+        value: "14"
+
+databases:
+  - name: randevum-db
+    plan: free
+    region: frankfurt
+    databaseName: randevum
+    user: randevum
